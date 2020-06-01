@@ -1,0 +1,58 @@
+# onlinebanking
+POST - Login
+http://localhost:1010/users/login
+{
+	"username":"mahfooz",
+	"password":"Password@1"
+}
+
+POST - Create New User
+http://localhost:1010/users
+{
+	"username":"mahfooz",
+	"password":"Password@1",
+	"firstName":"Mahfooz",
+	"lastName":"Ahmad",
+	"email":"mahfooz.lakhani@gmail.com",
+	"phone":"9810218422",
+	"ssn":"123-45-6789",
+	"address":"Noida"
+}
+
+GET - Savings Account Details
+http://localhost:1010/accounts/savingsAccount
+
+GET - Checking Account Details
+http://localhost:1010/accounts/checkingAccount
+
+GET - MoneyMarket Account Details
+http://localhost:1010/accounts/moneyMarketAccount
+
+
+POST - Deposit
+http://localhost:1010/accounts/deposit
+{
+	"accountType":"Savings",
+	"amount":10000.00
+}
+
+POST - Withdraw
+http://localhost:1010/accounts/withdraw
+{
+	"accountType":"Savings",
+	"amount":10000.00
+}
+
+GET - Saving Transaction List
+http://localhost:1010/accounts/savingAccountTransactionList
+
+GET - Money Market Transaction List
+http://localhost:1010/accounts/moneyMarketAccountTransactionList
+
+POST - Transfer Between Accounts
+http://localhost:1010/transfer/betweenAccounts
+{
+	"fromAccount":"Savings",
+	"toAccount":"Checking",
+	"amount":50
+}
