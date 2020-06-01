@@ -1,13 +1,13 @@
-# onlinebanking
-POST - Login  
+## onlinebanking
+# POST - Login  
 http://localhost:1010/users/login  
 Body :  
-{
-	"username":"mahfooz",
-	"password":"Password@1"
+{  
+	"username":"mahfooz",  
+	"password":"Password@1"  
 }
 
-POST - Create New User  
+# POST - Create New User  
 http://localhost:1010/users  
 Body :  
 {  
@@ -21,17 +21,17 @@ Body :
 	"address":"Noida"  
 }
 
-GET - Savings Account Details  
+# GET - Savings Account Details  
 http://localhost:1010/accounts/savingsAccount  
 
-GET - Checking Account Details  
+# GET - Checking Account Details  
 http://localhost:1010/accounts/checkingAccount  
 
-GET - MoneyMarket Account Details  
+# GET - MoneyMarket Account Details  
 http://localhost:1010/accounts/moneyMarketAccount  
 
 
-POST - Deposit  
+# POST - Deposit  
 http://localhost:1010/accounts/deposit  
 Body :  
 {  
@@ -39,7 +39,7 @@ Body :
 	"amount":10000.00  
 }
 
-POST - Withdraw  
+# POST - Withdraw  
 http://localhost:1010/accounts/withdraw  
 Body :  
 {  
@@ -47,13 +47,13 @@ Body :
 	"amount":10000.00  
 }
 
-GET - Saving Transaction List  
+# GET - Saving Transaction List  
 http://localhost:1010/accounts/savingAccountTransactionList  
 
-GET - Money Market Transaction List  
+# GET - Money Market Transaction List  
 http://localhost:1010/accounts/moneyMarketAccountTransactionList  
 
-POST - Transfer Between Accounts  
+# POST - Transfer Between Accounts  
 http://localhost:1010/transfer/betweenAccounts  
 Body :  
 {  
