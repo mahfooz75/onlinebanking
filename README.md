@@ -1,6 +1,7 @@
 # onlinebanking
 POST - Login
 http://localhost:1010/users/login
+Body :
 {
 	"username":"mahfooz",
 	"password":"Password@1"
@@ -8,6 +9,7 @@ http://localhost:1010/users/login
 
 POST - Create New User
 http://localhost:1010/users
+Body :
 {
 	"username":"mahfooz",
 	"password":"Password@1",
@@ -31,6 +33,7 @@ http://localhost:1010/accounts/moneyMarketAccount
 
 POST - Deposit
 http://localhost:1010/accounts/deposit
+Body :
 {
 	"accountType":"Savings",
 	"amount":10000.00
@@ -38,6 +41,7 @@ http://localhost:1010/accounts/deposit
 
 POST - Withdraw
 http://localhost:1010/accounts/withdraw
+Body :
 {
 	"accountType":"Savings",
 	"amount":10000.00
@@ -51,6 +55,7 @@ http://localhost:1010/accounts/moneyMarketAccountTransactionList
 
 POST - Transfer Between Accounts
 http://localhost:1010/transfer/betweenAccounts
+Body :
 {
 	"fromAccount":"Savings",
 	"toAccount":"Checking",
