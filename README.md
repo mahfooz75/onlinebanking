@@ -1,15 +1,15 @@
 # onlinebanking
-POST - Login
-http://localhost:1010/users/login
-Body :
+POST - Login  
+http://localhost:1010/users/login  
+Body :  
 {
 	"username":"mahfooz",
 	"password":"Password@1"
 }
 
-POST - Create New User
-http://localhost:1010/users
-Body :
+POST - Create New User  
+http://localhost:1010/users  
+Body :  
 {
 	"username":"mahfooz",
 	"password":"Password@1",
