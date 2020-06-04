@@ -1,7 +1,13 @@
 package com.iris.request;
 
+import javax.validation.constraints.NotBlank;
+
 public class UserLoginRequestModel {
+	
+	@NotBlank(message = "Username cannot be blank")
 	private String username;
+	
+	@NotBlank(message = "Password cannot be blank")
 	private String password;
 
 	public String getUsername() {

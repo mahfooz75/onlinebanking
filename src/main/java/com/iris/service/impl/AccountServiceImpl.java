@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.iris.domain.AccountNumberGenerator;
+import com.iris.domain.ResponseMessage;
 import com.iris.domain.User;
 import com.iris.domain.account.CheckingAccount;
 import com.iris.domain.account.MoneyMarketAccount;
@@ -82,9 +83,10 @@ public class AccountServiceImpl implements AccountService {
 	}
 
 	@Override
-	public String deposit(String accountType, double amount, String userName) {
+	public ResponseMessage deposit(final String accountTypeInput, final double amount, final String userName) {
+		String accountType=accountTypeInput.replaceAll("\\s+", "");
 		User user = userService.findByUsername(userName);
-
+		ResponseMessage response = new ResponseMessage();
 		if (accountType.equalsIgnoreCase("Savings")) {
 			SavingsAccount savingsAccount = user.getSavingsAccount();
 			savingsAccount.setAccountBalance(savingsAccount.getAccountBalance().add(new BigDecimal(amount)));
@@ -94,6 +96,7 @@ public class AccountServiceImpl implements AccountService {
 			SavingsTransaction savingsTransaction = new SavingsTransaction(date, "Deposit to savings Account",
 					"Saving Account", "Finished", amount, savingsAccount.getAccountBalance(),savingsAccount);
 			transactionService.saveSavingsDepositTransaction(savingsTransaction);
+			response.setMessage("Deposit Success");
 		}
 		else if (accountType.equalsIgnoreCase("Checking")) {
 			CheckingAccount checkingAccount = user.getCheckingAccount();
@@ -104,6 +107,7 @@ public class AccountServiceImpl implements AccountService {
 			CheckingTransaction checkingTransaction = new CheckingTransaction(date, "Deposit to Checking Account",
 					"Checking Account", "Finished", amount, checkingAccount.getAccountBalance(),checkingAccount);
 			transactionService.saveCheckingDepositTransaction(checkingTransaction);
+			response.setMessage("Deposit Success");
 		}
 		else if(accountType.equalsIgnoreCase("MoneyMarket")) {
 			MoneyMarketAccount moneyMarketAccount=user.getMoneyMarketAccount();
@@ -114,45 +118,69 @@ public class AccountServiceImpl implements AccountService {
 			
 			MoneyMarketTransaction moneyMarketTransaction = new MoneyMarketTransaction(date, "Deposit to Money Market Account", "Money Market Account", "Finished", amount, moneyMarketAccount.getAccountBalance(), moneyMarketAccount);
 			transactionService.saveMoneyMarketDepositTransaction(moneyMarketTransaction);
+			response.setMessage("Deposit Success");
+		}else {
+			response.setMessage("Deposit fails");
 		}
-		return "Deposit Success";
+		return response;
 	}
 
 	@Override
-	public String withdraw(String accountType, double amount, String userName) {
+	public ResponseMessage withdraw(String accountTypeInput, double amount, String userName) {
+		String accountType=accountTypeInput.replaceAll("\\s+", "");
 		User user = userService.findByUsername(userName);
-
+		ResponseMessage response=new ResponseMessage();
 		if (accountType.equalsIgnoreCase("Savings")) {
 			SavingsAccount savingsAccount = user.getSavingsAccount();
-			savingsAccount.setAccountBalance(savingsAccount.getAccountBalance().subtract(new BigDecimal(amount)));
+			BigDecimal balanceAmount = savingsAccount.getAccountBalance();
+			if(balanceAmount.compareTo(new BigDecimal(amount))<=0) {
+				response.setMessage("Insufficient Balance");
+				return response;
+			}
+			savingsAccount.setAccountBalance(balanceAmount.subtract(new BigDecimal(amount)));
 			savingsAccountRepo.save(savingsAccount);
 
 			Date date = new Date();
 			SavingsTransaction savingsTransaction = new SavingsTransaction(date, "Withdraw from savings Account",
 					"Saving Account", "Finished", amount, savingsAccount.getAccountBalance(),savingsAccount);
 			transactionService.saveSavingsDepositTransaction(savingsTransaction);
+			response.setMessage("Withdraw Success");
 		}
 		else if (accountType.equalsIgnoreCase("Checking")) {
 			CheckingAccount checkingAccount = user.getCheckingAccount();
-			checkingAccount.setAccountBalance(checkingAccount.getAccountBalance().subtract(new BigDecimal(amount)));
+			BigDecimal balanceAmount = checkingAccount.getAccountBalance();
+			if(balanceAmount.compareTo(new BigDecimal(amount))<=0) {
+				response.setMessage("Insufficient Balance");
+				return response;
+			}
+			checkingAccount.setAccountBalance(balanceAmount.subtract(new BigDecimal(amount)));
 			checkingAccountRepo.save(checkingAccount);
 
 			Date date = new Date();
 			CheckingTransaction checkingTransaction = new CheckingTransaction(date, "Withdraw from Checking Account",
 					"Checking Account", "Finished", amount, checkingAccount.getAccountBalance(),checkingAccount);
 			transactionService.saveCheckingDepositTransaction(checkingTransaction);
+			response.setMessage("Withdraw Success");
 		}
 		else if(accountType.equalsIgnoreCase("MoneyMarket")) {
 			MoneyMarketAccount moneyMarketAccount=user.getMoneyMarketAccount();
-			moneyMarketAccount.setAccountBalance(moneyMarketAccount.getAccountBalance().subtract(new BigDecimal(amount)));
+			BigDecimal balanceAmount = moneyMarketAccount.getAccountBalance();
+			if(balanceAmount.compareTo(new BigDecimal(amount))<0) {
+				response.setMessage("Insufficient Balance");
+				return response;
+			}
+			moneyMarketAccount.setAccountBalance(balanceAmount.subtract(new BigDecimal(amount)));
 			moneyMarketAccountRepo.save(moneyMarketAccount);
 			
 			Date date = new Date();
 			
 			MoneyMarketTransaction moneyMarketTransaction = new MoneyMarketTransaction(date, "Withdraw from Money Market Account", "Money Market Account", "Finished", amount, moneyMarketAccount.getAccountBalance(), moneyMarketAccount);
 			transactionService.saveMoneyMarketDepositTransaction(moneyMarketTransaction);
+			response.setMessage("Withdraw Success");
+		}else {
+			response.setMessage("Withdraw Fail");
 		}
-		return "Withdraw Success";
+		return response;
 	}
 	
 	

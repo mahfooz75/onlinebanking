@@ -1,6 +1,7 @@
 package com.iris.domain;
 
 import java.util.ArrayList;
+
 import java.util.Collection;
 
 import javax.persistence.Column;
@@ -9,6 +10,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
+import javax.persistence.UniqueConstraint;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -26,13 +30,27 @@ public class User implements UserDetails {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "userId", nullable = false, updatable = false)
 	private Long userId;
+	
+	@NotBlank(message = "Username is required")
+	@Column(unique = true)
 	private String username;
+	
+	@NotBlank(message = "Password is required")
 	private String password;
+	
+	@NotBlank(message = "First name is required")
 	private String firstName;
+	
+	@NotBlank(message = "Last name is required")
 	private String lastName;
+	
+	@Email(message = "Enter valid email")
+	@NotBlank(message = "Email is required")
 	@Column(name = "email", nullable = false, unique = true)
 	private String email;
 	private String phone;
+	
+	@NotBlank(message = "SSN is required")
 	private String ssn;
 	private String address;
 
