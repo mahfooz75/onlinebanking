@@ -3,12 +3,9 @@ package com.iris.controller;
 import java.security.Principal;
 import java.util.List;
 
-import javax.validation.Valid;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -25,7 +22,6 @@ import com.iris.domain.transactions.MoneyMarketTransaction;
 import com.iris.domain.transactions.SavingsTransaction;
 import com.iris.request.DepositAndWithdrawRequest;
 import com.iris.service.AccountService;
-import com.iris.service.MapValidationErrorService;
 import com.iris.service.TransactionService;
 import com.iris.service.UserService;
 
@@ -39,9 +35,9 @@ public class AccountController {
 	private AccountService accountService;
 	@Autowired
 	private TransactionService transactionService;
-	@Autowired
-	private MapValidationErrorService mapValidationErrorService;
-	
+//	@Autowired
+//	private MapValidationErrorService mapValidationErrorService;
+//	
 	@GetMapping("/savingsAccount")
 	public ResponseEntity<?> savingsAccount(Principal principal){
 		User user = userService.findByUsername(principal.getName());
@@ -64,21 +60,15 @@ public class AccountController {
 	}
 	
 	@PostMapping("/deposit")
-	public ResponseEntity<?> deposit(@Valid @RequestBody DepositAndWithdrawRequest depositRequest, BindingResult result, Principal principal){
-		ResponseEntity<?> errorMap=mapValidationErrorService.mapValidationService(result);
-		if(errorMap!=null) {
-			return errorMap;
-		}
+	public ResponseEntity<?> deposit(@RequestBody DepositAndWithdrawRequest depositRequest, Principal principal){
+		
 		ResponseMessage response = accountService.deposit(depositRequest.getAccountType(),depositRequest.getAmount(),principal.getName());
 		return new ResponseEntity<ResponseMessage>(response,HttpStatus.OK);
 	}
 	
 	@PostMapping("/withdraw")
-	public ResponseEntity<?> withdraw(@Valid @RequestBody DepositAndWithdrawRequest depositRequest, BindingResult result, Principal principal){
-		ResponseEntity<?> errorMap=mapValidationErrorService.mapValidationService(result);
-		if(errorMap!=null) {
-			return errorMap;
-		}
+	public ResponseEntity<?> withdraw(@RequestBody DepositAndWithdrawRequest depositRequest, Principal principal){
+		
 		ResponseMessage response = accountService.withdraw(depositRequest.getAccountType(),depositRequest.getAmount(),principal.getName());
 		return new ResponseEntity<ResponseMessage>(response,HttpStatus.OK);
 	}
